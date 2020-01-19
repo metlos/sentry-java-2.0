@@ -1,0 +1,3 @@
+[submodule "submodules/sentry-android"]
+	path = submodules/sentry-android
+	url = https://github.com/getsentry/sentry-android.git
