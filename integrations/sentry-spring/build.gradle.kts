@@ -1,36 +1,20 @@
-import aQute.bnd.gradle.Bundle
-
 plugins {
-    id("biz.aQute.bnd.builder") version "4.3.1"
+    `java-library`
+    kotlin("jvm")
 }
-
-val springVersion = "4.3.10.RELEASE"
-val javaxServletVersion = "3.0.1"
 
 dependencies {
+    compileOnly(Config.CompileOnly.jetbrainsAnnotations)
     implementation(project(":sentry-core"))
-    implementation("org.springframework:spring-webmvc:$springVersion")
-    implementation("javax.servlet:javax.servlet-api:$javaxServletVersion")
+    implementation(Config.Libs.springWebMVC)
+    implementation(Config.Libs.javaxServlet)
+    testImplementation(Config.TestLibs.kotlinTestJunit)
+    testImplementation(Config.TestLibs.springTest)
 }
 
-buildscript {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
+configure<SourceSetContainer> {
+    test {
+        java.srcDir("src/test/java")
     }
 }
 
-// for love or money, I can't figure this one out... Gradle is too magic for me still
-//tasks {
-//    val bundle by registering(Bundle::class)
-//
-//    bundle {
-//
-//    }
-////    bundle {
-////        bnd ('Bundle-Name': 'overwrittenSpecialOsgiName',
-////             'Bundle-Vendor': 'Sentry',
-////             'Bundle-Description': 'Platform2: Metrics 2 Measures Framework',
-////             'Bundle-DocURL': 'https://www.mycompany.com')
-////    }
-//}

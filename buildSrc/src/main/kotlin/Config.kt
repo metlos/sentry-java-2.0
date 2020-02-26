@@ -1,63 +1,80 @@
 object Config {
-    val kotlinVersion = "1.3.61"
-    val kotlinStdLib = "stdlib-jdk8"
+    const val kotlinVersion = "1.3.61"
+    const val kotlinStdLib = "stdlib-jdk8"
 
     object BuildPlugins {
-        val kotlinGradlePlugin = "gradle-plugin"
+        const val kotlinGradlePlugin = "gradle-plugin"
     }
 
+    private const val springVersion = "4.3.6.RELEASE"
+
     object Libs {
+        private const val springBootVersion = "1.5.1.RELEASE"
+
         // only bump gson if https://github.com/google/gson/issues/1597 is fixed
-        val gson = "com.google.code.gson:gson:2.8.5"
+        const val gson = "com.google.code.gson:gson:2.8.5"
+        const val javaxServlet = "javax.servlet:javax.servlet-api:3.0.1"
+        const val springWebMVC = "org.springframework:spring-webmvc:$springVersion"
+        const val springBoot = "org.springframework.boot:spring-boot:$springBootVersion"
+        const val springBootAutoConfigure = "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
+        const val springBootStarterWeb = "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+        const val springBootAutoconfigureProcessor = "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
+        const val springBootConfigurationProcessor = "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
+        const val springContext = "org.springframework:spring-context:$springVersion"
     }
 
     object TestLibs {
-        val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-        val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+        const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+        const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+        const val springTest = "org.springframework:spring-test:$springVersion"
     }
 
     object QualityPlugins {
-        val jacocoVersion = "0.8.5"
-        val spotless = "com.diffplug.gradle.spotless"
-        val spotlessVersion = "3.25.0"
-        val errorProne = "net.ltgt.errorprone"
-        val errorpronePlugin = "net.ltgt.gradle:gradle-errorprone-plugin:1.1.1"
-        val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.27.0"
-        val gradleVersions = "com.github.ben-manes.versions"
+        const val jacocoVersion = "0.8.5"
+        const val spotless = "com.diffplug.gradle.spotless"
+        const val spotlessVersion = "3.27.0"
+        const val errorProne = "net.ltgt.errorprone"
+        const val errorpronePlugin = "net.ltgt.gradle:gradle-errorprone-plugin:1.1.1"
+        const val gradleVersionsPlugin = "com.github.ben-manes:gradle-versions-plugin:0.28.0"
+        const val gradleVersions = "com.github.ben-manes.versions"
     }
 
     object Sentry {
-        val SENTRY_CLIENT_NAME = "sentry.java.android"
-        val group = "io.sentry"
+        const val SENTRY_CLIENT_NAME = "sentry.java"
+        const val group = "io.sentry"
         //        TODO: change version to publish new version
-        val version = "2.0.0-beta02"
-        val description = "SDK for sentry.io"
+        const val version = "2.1.0-SNAPSHOT"
+        const val description = "SDK for sentry.io"
         //        TODO: change version code to publish new version, follow the pattern of `version`
-        val buildVersionCode = 20011
-        val website = "https://sentry.io"
-        val userOrg = "getsentry"
-        val repoName = "sentry-android"
-        val licence = "MIT"
-        val issueTracker = "https://github.com/getsentry/sentry-android/issues"
-        val repository = "https://github.com/getsentry/sentry-android"
-        val devName = "Sentry Team and Contributors"
-        val devEmail = "accounts@sentry.io"
-        val devUser = "getsentry"
+        const val buildVersionCode = 20011
+        const val website = "https://sentry.io"
+        const val userOrg = "getsentry"
+        const val repoName = "sentry-android"
+        const val licence = "MIT"
+        const val licenceUrl = "http://www.opensource.org/licenses/mit-license.php"
+        const val issueTracker = "https://github.com/getsentry/sentry-android/issues"
+        const val repository = "https://github.com/getsentry/sentry-android"
+        const val devName = "Sentry Team and Contributors"
+        const val devEmail = "accounts@sentry.io"
+        const val scmConnection = "scm:git:git://github.com/getsentry/sentry-android.git"
+        const val scmDevConnection = "scm:git:ssh://github.com:getsentry/sentry-android.git"
+        const val scmUrl = "https://github.com/getsentry/sentry-android/tree/master"
     }
 
     object CompileOnly {
-        private val nopenVersion = "1.0.1"
+        private const val nopenVersion = "1.0.1"
 
-        val jetbrainsAnnotations = "org.jetbrains:annotations:18.0.0"
-        val nopen = "com.jakewharton.nopen:nopen-annotations:$nopenVersion"
-        val nopenChecker = "com.jakewharton.nopen:nopen-checker:$nopenVersion"
-        val errorprone = "com.google.errorprone:error_prone_core:2.3.4"
-        val errorProneJavac8 = "com.google.errorprone:javac:9+181-r4173-1"
+        const val jetbrainsAnnotations = "org.jetbrains:annotations:18.0.0"
+        const val nopen = "com.jakewharton.nopen:nopen-annotations:$nopenVersion"
+        const val nopenChecker = "com.jakewharton.nopen:nopen-checker:$nopenVersion"
+        const val errorprone = "com.google.errorprone:error_prone_core:2.3.4"
+        const val errorProneJavac8 = "com.google.errorprone:javac:9+181-r4173-1"
     }
 
     object Deploy {
-        val novodaBintrayPlugin = "com.novoda:bintray-release:0.9.2"
-        val novodaBintray = "com.novoda.bintray-release"
-        val sign = true
+        const val novodaBintrayPlugin = "com.novoda:bintray-release:develop-39"
+        const val novodaBintray = "com.novoda.bintray-release"
+        const val sign = true
+        const val mavenCentralSync = true
     }
 }

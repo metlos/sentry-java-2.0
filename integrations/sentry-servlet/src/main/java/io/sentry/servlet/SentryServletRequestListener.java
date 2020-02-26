@@ -11,8 +11,8 @@ import javax.servlet.ServletRequestListener;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * This request listener pushes a new scope into sentry that enriches a Sentry event with
- * the details about the current request upon sending.
+ * This request listener pushes a new scope into sentry that enriches a Sentry event with the
+ * details about the current request upon sending.
  */
 public class SentryServletRequestListener implements ServletRequestListener {
   @Override
@@ -23,30 +23,33 @@ public class SentryServletRequestListener implements ServletRequestListener {
   @Override
   public void requestInitialized(ServletRequestEvent servletRequestEvent) {
     Sentry.pushScope();
-    Sentry.configureScope(scope -> scope.addEventProcessor((event, __) -> {
-      ServletRequest sreq = servletRequestEvent.getServletRequest();
-      if (!(sreq instanceof HttpServletRequest)) {
-        return event;
-      }
+    Sentry.configureScope(
+        scope ->
+            scope.addEventProcessor(
+                (event, __) -> {
+                  ServletRequest sreq = servletRequestEvent.getServletRequest();
+                  if (!(sreq instanceof HttpServletRequest)) {
+                    return event;
+                  }
 
-      if (event.getRequest() != null) {
-        // the application code already set the request - don't overwrite it then
-        return event;
-      }
-      
-      HttpServletRequest httpReq = (HttpServletRequest) sreq;
+                  if (event.getRequest() != null) {
+                    // the application code already set the request - don't overwrite it then
+                    return event;
+                  }
 
-      Request req = new Request();
-      req.setCookies(cookiesToString(httpReq.getHeaders("Cookie")));
-      req.setHeaders(allHeaders(httpReq));
-      req.setMethod(httpReq.getMethod());
-      req.setQueryString(httpReq.getQueryString());
-      req.setUrl(httpReq.getRequestURI());
-      // TODO add request attributes as "envs" of the sentry request or some other attr?
+                  HttpServletRequest httpReq = (HttpServletRequest) sreq;
 
-      event.setRequest(req);
-      return event;
-    }));
+                  Request req = new Request();
+                  req.setCookies(cookiesToString(httpReq.getHeaders("Cookie")));
+                  req.setHeaders(allHeaders(httpReq));
+                  req.setMethod(httpReq.getMethod());
+                  req.setQueryString(httpReq.getQueryString());
+                  req.setUrl(httpReq.getRequestURI());
+                  // TODO add request attributes as "envs" of the sentry request or some other attr?
+
+                  event.setRequest(req);
+                  return event;
+                }));
   }
 
   private static String cookiesToString(Enumeration<String> cookies) {
