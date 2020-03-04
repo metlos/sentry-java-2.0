@@ -7,9 +7,9 @@ object Config {
     }
 
     private const val springVersion = "4.3.6.RELEASE"
+    private const val springBootVersion = "1.5.1.RELEASE"
 
     object Libs {
-        private const val springBootVersion = "1.5.1.RELEASE"
 
         // only bump gson if https://github.com/google/gson/issues/1597 is fixed
         const val gson = "com.google.code.gson:gson:2.8.5"
@@ -27,6 +27,7 @@ object Config {
         const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
         const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
         const val springTest = "org.springframework:spring-test:$springVersion"
+        const val springBootTest = "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     }
 
     object QualityPlugins {
@@ -46,7 +47,7 @@ object Config {
         const val version = "2.1.0-SNAPSHOT"
         const val description = "SDK for sentry.io"
         //        TODO: change version code to publish new version, follow the pattern of `version`
-        const val buildVersionCode = 20011
+        const val buildVersionCode = 20017
         const val website = "https://sentry.io"
         const val userOrg = "getsentry"
         const val repoName = "sentry-android"
@@ -64,7 +65,7 @@ object Config {
     object CompileOnly {
         private const val nopenVersion = "1.0.1"
 
-        const val jetbrainsAnnotations = "org.jetbrains:annotations:18.0.0"
+        const val jetbrainsAnnotations = "org.jetbrains:annotations:19.0.0"
         const val nopen = "com.jakewharton.nopen:nopen-annotations:$nopenVersion"
         const val nopenChecker = "com.jakewharton.nopen:nopen-checker:$nopenVersion"
         const val errorprone = "com.google.errorprone:error_prone_core:2.3.4"
@@ -72,7 +73,7 @@ object Config {
     }
 
     object Deploy {
-        const val novodaBintrayPlugin = "com.novoda:bintray-release:develop-39"
+        const val novodaBintrayPlugin = "com.novoda:bintray-release:1.0.1"
         const val novodaBintray = "com.novoda.bintray-release"
         const val sign = true
         const val mavenCentralSync = true

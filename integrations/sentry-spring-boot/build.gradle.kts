@@ -16,6 +16,9 @@ dependencies {
     compileOnly(Config.Libs.javaxServlet)
     compileOnly(Config.Libs.springBootConfigurationProcessor)
     compileOnly(Config.Libs.springBootAutoconfigureProcessor)
+    compileOnly(Config.CompileOnly.jetbrainsAnnotations)
+    testImplementation(Config.TestLibs.kotlinTestJunit)
+    testImplementation(Config.TestLibs.springBootTest)
 }
 
 buildscript {

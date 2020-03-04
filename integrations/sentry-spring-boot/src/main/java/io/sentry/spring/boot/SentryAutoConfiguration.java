@@ -1,15 +1,19 @@
 package io.sentry.spring.boot;
 
+import static java.util.Collections.emptyList;
+
 import io.sentry.core.EventProcessor;
 import io.sentry.core.HubAdapter;
 import io.sentry.core.IHub;
 import io.sentry.core.Integration;
 import io.sentry.core.Sentry;
+import io.sentry.core.Sentry.OptionsConfiguration;
+import io.sentry.core.SentryOptions;
 import io.sentry.core.SentryOptions.BeforeBreadcrumbCallback;
 import io.sentry.core.SentryOptions.BeforeSendCallback;
+import io.sentry.core.transport.ITransportGate;
 import io.sentry.spring.SentryExceptionResolver;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -50,33 +54,67 @@ public class SentryAutoConfiguration {
     return new SentryServletContextInitializer();
   }
 
+  @Bean
+  @ConditionalOnMissingBean(BeforeSendCallback.class)
+  public BeforeSendCallback defaultBeforeSendCallback() {
+    return (event, __) -> event;
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(BeforeBreadcrumbCallback.class)
+  public BeforeBreadcrumbCallback defaultBeforeBreadcrumbCallback() {
+    return (breadcrumb, __) -> breadcrumb;
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(EventProcessor.class)
+  public List<EventProcessor> defaultEventProcessors() {
+    return emptyList();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(Integration.class)
+  public List<Integration> defaultIntegrations() {
+    return emptyList();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(ITransportGate.class)
+  public ITransportGate defaultTransportGate() {
+    return () -> true;
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(OptionsConfiguration.class)
+  public OptionsConfiguration<SentryOptions> defaultOptionsConfigurator(
+      SentryProperties properties,
+      BeforeSendCallback beforeSendCallback,
+      BeforeBreadcrumbCallback beforeBreadcrumbCallback,
+      ITransportGate transportGate,
+      List<EventProcessor> eventProcessors,
+      List<Integration> integrations) {
+
+    return options -> {
+      properties.applyTo(options);
+      options.setBeforeBreadcrumb(beforeBreadcrumbCallback);
+      options.setBeforeSend(beforeSendCallback);
+      eventProcessors.forEach(options::addEventProcessor);
+      integrations.forEach(options::addIntegration);
+      options.setTransportGate(transportGate);
+    };
+  }
+
   /**
    * Initializes a {@link io.sentry.core.IHub}.
    *
-   * <p>Note that the supplied {@code properties} are modified during this call with the values
-   * supplied in the other parameters.
-   *
    * @return a configured instance of {@link io.sentry.core.IHub}.
    */
-  @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
   @Bean
   @ConditionalOnMissingBean(IHub.class)
-  @ConditionalOnProperty(
-      name = "sentry.enabled",
-      havingValue = "true",
-      matchIfMissing = true)
-  public IHub sentryHub(SentryProperties properties,
-      Optional<BeforeSendCallback> beforeSendCallback,
-      Optional<BeforeBreadcrumbCallback> beforeBreadcrumbCallback,
-      Optional<List<EventProcessor>> eventProcessors,
-      Optional<List<Integration>> integrations) {
-
-    beforeSendCallback.ifPresent(properties::setBeforeSend);
-    beforeBreadcrumbCallback.ifPresent(properties::setBeforeBreadcrumb);
-    eventProcessors.ifPresent(ps -> ps.forEach(properties::addEventProcessor));
-    integrations.ifPresent(is -> is.forEach(properties::addIntegration));
-
-    Sentry.init(properties, false);
+  @ConditionalOnProperty(name = "sentry.enabled", havingValue = "true", matchIfMissing = true)
+  public IHub sentryHub(
+      OptionsConfiguration<SentryOptions> configurator, SentryProperties properties) {
+    Sentry.init(configurator, properties.isGlobalHubMode());
     return HubAdapter.getInstance();
   }
 }

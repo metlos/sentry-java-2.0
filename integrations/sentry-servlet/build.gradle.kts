@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    compileOnly(Config.Libs.javaxServlet)
+    implementation(Config.Libs.javaxServlet)
     implementation(project(":sentry-core"))
 }
