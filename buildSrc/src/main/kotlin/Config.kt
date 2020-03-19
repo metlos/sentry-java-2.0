@@ -10,7 +10,6 @@ object Config {
     private const val springBootVersion = "1.5.1.RELEASE"
 
     object Libs {
-
         // only bump gson if https://github.com/google/gson/issues/1597 is fixed
         const val gson = "com.google.code.gson:gson:2.8.5"
         const val javaxServlet = "javax.servlet:javax.servlet-api:3.0.1"
@@ -21,6 +20,7 @@ object Config {
         const val springBootAutoconfigureProcessor = "org.springframework.boot:spring-boot-autoconfigure-processor:$springBootVersion"
         const val springBootConfigurationProcessor = "org.springframework.boot:spring-boot-configuration-processor:$springBootVersion"
         const val springContext = "org.springframework:spring-context:$springVersion"
+        const val log4j = "log4j:log4j:1.2.17"
     }
 
     object TestLibs {
